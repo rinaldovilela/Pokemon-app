@@ -11,11 +11,9 @@
   <div *ngIf="isLoading" class="loading-container" aria-live="polite">
     <ion-spinner name="circular"></ion-spinner>
   </div>
-
-  <div *ngIf="hasError && !isLoading" class="error" aria-live="polite">
+  <div *ngIf="hasError" class="error" aria-live="polite">
     Erro ao carregar os detalhes do Pokémon.
   </div>
-
   <ion-card *ngIf="pokemonDetails && !isLoading && !hasError">
     <ion-card-header>
       <ion-card-title>{{ pokemonDetails.name | titlecase }}</ion-card-title>
