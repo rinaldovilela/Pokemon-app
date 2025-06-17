@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Tela Principal - Pokémons</ion-title>
+    <ion-title>Pokémons</ion-title>
     <ion-buttons slot="end">
       <app-theme-toggle></app-theme-toggle>
     </ion-buttons>
@@ -36,15 +36,20 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
+  <ion-toolbar class="footer-toolbar">
     <ion-buttons slot="start">
-      <ion-button (click)="previousPage()" [disabled]="offset === 0"
-        >Anterior</ion-button
-      >
-      <ion-button (click)="nextPage()">Próximo</ion-button>
+      <ion-button (click)="previousPage()" [disabled]="offset === 0">
+        <ion-icon name="chevron-back" slot="start"></ion-icon>
+        Anterior
+      </ion-button>
+      <ion-button (click)="nextPage()">
+        Próximo
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title slot="end"
-      >Pokémons - {{ offset + 1 }} a {{ offset + pokemons.length }}</ion-title
-    >
+
+    <div class="footer-range">
+      Pokémons – {{ offset + 1 }} a {{ offset + pokemons.length }}
+    </div>
   </ion-toolbar>
 </ion-footer>

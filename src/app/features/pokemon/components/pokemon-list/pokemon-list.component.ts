@@ -78,4 +78,6 @@ export class PokemonListComponent implements OnInit {
     const img = event.target as HTMLImageElement;
     img.style.opacity = '1';
   }
+
+
 }
