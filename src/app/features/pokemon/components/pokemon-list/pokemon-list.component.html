@@ -25,7 +25,6 @@
             <img
               [src]="getImageUrl(pokemon.url)"
               alt="{{ pokemon.name }}"
-              loading="lazy"
               class="pokemon-image"
               (load)="onImageLoad($event)"
             />

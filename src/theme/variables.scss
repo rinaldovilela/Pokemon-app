@@ -8,6 +8,15 @@
   --ion-card-background: #ffffff;
   --ion-card-title-color: #222428;
   --ion-card-subtitle-color: #222428;
+  --font-family-base: "Roboto", sans-serif; // Fonte padrão
+  --font-size-base: clamp(16px, 2vw, 18px); // Tamanho base responsivo
+  --font-size-title: clamp(1rem, 4vw, 1.2rem); // Tamanho para títulos
+  --font-size-title-sm: clamp(
+    0.9rem,
+    3.5vw,
+    1rem
+  ); // Tamanho para títulos em telas pequenas
+  --font-size-body: clamp(0.875rem, 2.5vw, 1rem);
   /* Transição global para todas as propriedades */
 }
 

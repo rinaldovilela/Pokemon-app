@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { Pokemon } from 'src/app/core/models/pokemon.model';
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,7 @@ export class PokemonListComponent implements OnInit {
   pokemons: Pokemon[] = [];
   offset: number = 0;
   limit: number = 20;
+  isSmallScreen: boolean = false;
 
   constructor(
     private pokemonService: PokemonService,
@@ -26,6 +27,16 @@ export class PokemonListComponent implements OnInit {
 
   ngOnInit() {
     this.loadPokemons();
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth <= 576;
   }
 
   loadPokemons() {
@@ -65,6 +76,6 @@ export class PokemonListComponent implements OnInit {
 
   onImageLoad(event: Event) {
     const img = event.target as HTMLImageElement;
-    img.style.opacity = '1'; // Aplica fade-in via CSS
+    img.style.opacity = '1';
   }
 }

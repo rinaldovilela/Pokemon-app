@@ -21,8 +21,8 @@ ion-card-content img {
 }
 
 ion-card-content img.pokemon-image {
-  background-color: var(--ion-card-background); // Placeholder cinza
-  min-height: 96px; // Tamanho mínimo para evitar salto
+  background-color: var(--ion-card-background);
+  min-height: 96px;
 }
 
 @media (max-width: 768px) {
