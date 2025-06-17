@@ -1,2 +1,15 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+:root {
+  --ion-color-primary: #3b4cca; /* Azul Pokébola */
+  --ion-color-secondary: #ff0000; /* Vermelho */
+  --ion-color-accent: #ffcb05; /* Amarelo */
+  --ion-color-neutral: #4b5eaa; /* Cinza */
+  --ion-color-error: #b22222; /* Vermelho escuro */
+}
+[data-theme="dark"] {
+  --ion-background-color: #1f2937; /* Cinza escuro */
+  --ion-text-color: #ffffff; /* Branco */
+  --ion-primary-color: #60a5fa; /* Azul claro */
+  --ion-accent-color: #ffcb05; /* Amarelo */
+}
