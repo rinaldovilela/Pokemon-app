@@ -21,8 +21,9 @@ export class PokemonListComponent implements OnInit {
   constructor(
     private pokemonService: PokemonService,
     private router: Router,
-    private route: ActivatedRoute // Injete ActivatedRoute
+    private route: ActivatedRoute
   ) {}
+
   ngOnInit() {
     this.loadPokemons();
   }
@@ -52,11 +53,18 @@ export class PokemonListComponent implements OnInit {
     const id = url.split('/').filter(Boolean).pop();
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
   }
+
   goToDetail(id: number) {
     this.router.navigate(['detail', id], { relativeTo: this.route });
   }
+
   getIdFromUrl(url: string): number {
     const id = url.split('/').filter(Boolean).pop();
     return Number(id);
+  }
+
+  onImageLoad(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.style.opacity = '1'; // Aplica fade-in via CSS
   }
 }

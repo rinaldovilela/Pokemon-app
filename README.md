@@ -21,3 +21,4 @@ Aplicativo mobile desenvolvido com Ionic 7 e Angular 18, consumindo a PokeAPI, p
 - Passo 2: Criação do PokemonService concluída.
 - Passo 3: Implementação da tela principal com lista paginada concluída.
 - Passo 4: Implementação do dark mode com ThemeService concluída.
+- Passo 5: Implementação da tela de detalhes do Pokémon concluída.
