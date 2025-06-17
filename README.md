@@ -17,4 +17,5 @@ Aplicativo mobile desenvolvido com Ionic 7 e Angular 18, consumindo a PokeAPI, p
 ## Status
 
 - Passo 1: Configuração inicial do projeto concluída.
-- Passo 2: Criação do PokemonService concluída com provideHttpClient.
+- Passo 2: Criação do PokemonService concluída.
+- Passo 3: Implementação da tela principal com lista paginada concluída.
