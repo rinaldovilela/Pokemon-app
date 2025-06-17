@@ -6,13 +6,13 @@ import { PokemonDetailComponent } from './components/pokemon-detail/pokemon-deta
 import { PokemonRoutingModule } from './pokemon-routing.module';
 
 @NgModule({
-  declarations: [], // Remova os componentes daqui
+  declarations: [],
   imports: [
     CommonModule,
     IonicModule,
     PokemonRoutingModule,
-    PokemonListComponent, // Adicione aqui
-    PokemonDetailComponent, // Adicione aqui
+    PokemonListComponent,
+    PokemonDetailComponent,
   ],
 })
 export class PokemonModule {}

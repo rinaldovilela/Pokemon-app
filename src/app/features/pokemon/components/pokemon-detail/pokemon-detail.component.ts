@@ -13,7 +13,9 @@ import { PokemonDetails } from 'src/app/core/models/pokemon.model';
   imports: [CommonModule, IonicModule],
 })
 export class PokemonDetailComponent implements OnInit {
-  pokemonDetails: PokemonDetails | undefined;
+  pokemonDetails: PokemonDetails | null = null; // Inclui null
+  isLoading: boolean = true;
+  hasError: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,34 +25,40 @@ export class PokemonDetailComponent implements OnInit {
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
-      this.pokemonService.getPokemonDetails(id).subscribe((details) => {
-        if (details && details.id) {
-          // Check if details are valid
-          this.pokemonDetails = details;
-        } else {
-          console.error('Invalid Pokémon details:', details);
-          this.pokemonDetails = undefined;
-        }
-        console.log('Detalhes do Pokémon:', this.pokemonDetails);
+      this.pokemonService.getPokemonDetails(id).subscribe({
+        next: (details) => {
+          if (details && details.id) {
+            this.pokemonDetails = details;
+          } else {
+            this.hasError = true;
+            console.error('Invalid Pokémon details:', details);
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.hasError = true;
+          this.isLoading = false;
+          console.error('Erro ao carregar detalhes:', err);
+        },
       });
+    } else {
+      this.hasError = true;
+      this.isLoading = false;
     }
   }
 
-  // Format types as a comma-separated string
   get typesFormatted(): string {
     return (
       this.pokemonDetails?.types?.map((t) => t.type.name).join(', ') ?? 'N/A'
     );
   }
 
-  // Calculate height in meters
   get heightInMeters(): string {
     return this.pokemonDetails?.height
       ? (this.pokemonDetails.height / 10).toFixed(2)
       : 'N/A';
   }
 
-  // Calculate weight in kilograms
   get weightInKg(): string {
     return this.pokemonDetails?.weight
       ? (this.pokemonDetails.weight / 10).toFixed(2)
