@@ -20,8 +20,4 @@ export class ThemeToggleComponent implements OnInit {
       this.isDarkMode = mode;
     });
   }
-
-  toggleTheme() {
-    this.themeService.toggleTheme();
-  }
 }

@@ -8,7 +8,31 @@
   --ion-card-background: #ffffff;
   --ion-card-title-color: #222428;
   --ion-card-subtitle-color: #222428;
-  transition: all 0.3s ease-in-out; // Adicionar transição suave
+  /* Transição global para todas as propriedades */
+}
+
+/* Aplicar transição a todos os componentes Ionic */
+ion-content,
+ion-header,
+ion-toolbar,
+ion-footer,
+ion-grid,
+ion-row,
+ion-card,
+ion-card-header,
+ion-card-content,
+ion-card-title,
+ion-card-subtitle,
+ion-button,
+ion-icon,
+ion-label,
+ion-input,
+ion-select,
+ion-text,
+ion-textarea,
+ion-col {
+  transition: background-color 0.4s ease, color 0.4s ease,
+    border-color 0.4s ease;
 }
 
 // Tema Escuro
@@ -21,11 +45,24 @@
   --ion-card-background: #2d3748;
   --ion-card-title-color: #ffffff;
   --ion-card-subtitle-color: #e2e8f0;
-  transition: all 0.3s ease-in-out; // Adicionar transição suave
+  /* Transição global para todas as propriedades */
 }
 
-ion-card {
-  background: var(--ion-card-background);
-  color: var(--ion-text-color);
-  transition: background 0.3s ease-in-out, color 0.3s ease-in-out; // Transição específica para ion-card
+/* Adicione isso no final do arquivo */
+body,
+ion-app {
+  transition: background-color 0.4s ease;
+}
+
+ion-header,
+ion-toolbar,
+ion-content,
+ion-grid,
+ion-row,
+ion-card,
+ion-card-header,
+ion-card-content,
+ion-card-title,
+ion-footer {
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
