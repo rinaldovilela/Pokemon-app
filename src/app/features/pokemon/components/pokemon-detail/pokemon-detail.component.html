@@ -4,19 +4,21 @@
       <ion-back-button defaultHref="/pokemon"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pokemonDetails?.name | titlecase }}</ion-title>
-    <!-- Mantém ?. pois pokemonDetails pode ser undefined -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div *ngIf="isLoading" class="loading">Carregando...</div>
-  <div *ngIf="hasError" class="error">
+  <div *ngIf="isLoading" class="loading-container" aria-live="polite">
+    <ion-spinner name="circular"></ion-spinner>
+  </div>
+
+  <div *ngIf="hasError && !isLoading" class="error" aria-live="polite">
     Erro ao carregar os detalhes do Pokémon.
   </div>
+
   <ion-card *ngIf="pokemonDetails && !isLoading && !hasError">
     <ion-card-header>
       <ion-card-title>{{ pokemonDetails.name | titlecase }}</ion-card-title>
-      <!-- Remove ?. pois pokemonDetails está protegido por *ngIf -->
     </ion-card-header>
     <ion-card-content>
       <img

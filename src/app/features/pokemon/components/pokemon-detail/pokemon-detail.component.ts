@@ -13,7 +13,7 @@ import { PokemonDetails } from 'src/app/core/models/pokemon.model';
   imports: [CommonModule, IonicModule],
 })
 export class PokemonDetailComponent implements OnInit {
-  pokemonDetails: PokemonDetails | null = null; // Inclui null
+  pokemonDetails: PokemonDetails | null = null; // null antes do carregamento ou em caso de erro
   isLoading: boolean = true;
   hasError: boolean = false;
 
@@ -24,6 +24,7 @@ export class PokemonDetailComponent implements OnInit {
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('Carregando detalhes do Pokémon com ID:', id);
     if (id) {
       this.pokemonService.getPokemonDetails(id).subscribe({
         next: (details) => {
@@ -44,6 +45,7 @@ export class PokemonDetailComponent implements OnInit {
     } else {
       this.hasError = true;
       this.isLoading = false;
+      console.error('ID inválido fornecido:', id);
     }
   }
 
