@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Tela Principal - Pokémons</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size="12"
+        size-md="6"
+        size-lg="4"
+        *ngFor="let pokemon of pokemons"
+      >
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <img [src]="getImageUrl(pokemon.url)" alt="{{ pokemon.name }}" />
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-button (click)="previousPage()" [disabled]="offset === 0"
+        >Anterior</ion-button
+      >
+      <ion-button (click)="nextPage()">Próximo</ion-button>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
