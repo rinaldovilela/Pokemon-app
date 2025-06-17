@@ -1,0 +1,13 @@
+ion-button {
+  --background: var(--ion-color-secondary);
+  --background-activated: var(--ion-color-accent);
+  --color: var(--ion-text-color);
+  padding: 8px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+ion-icon {
+  font-size: 20px;
+}

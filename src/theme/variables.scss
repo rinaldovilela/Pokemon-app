@@ -1,15 +1,68 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+// Tema Claro (padrão)
 :root {
-  --ion-color-primary: #3b4cca; /* Azul Pokébola */
-  --ion-color-secondary: #ff0000; /* Vermelho */
-  --ion-color-accent: #ffcb05; /* Amarelo */
-  --ion-color-neutral: #4b5eaa; /* Cinza */
-  --ion-color-error: #b22222; /* Vermelho escuro */
+  --ion-color-primary: #3880ff;
+  --ion-color-secondary: #3dc2ff;
+  --ion-color-accent: #5260ff;
+  --ion-background-color: #f4f5f8;
+  --ion-text-color: #222428;
+  --ion-card-background: #ffffff;
+  --ion-card-title-color: #222428;
+  --ion-card-subtitle-color: #222428;
+  /* Transição global para todas as propriedades */
 }
-[data-theme="dark"] {
-  --ion-background-color: #1f2937; /* Cinza escuro */
-  --ion-text-color: #ffffff; /* Branco */
-  --ion-primary-color: #60a5fa; /* Azul claro */
-  --ion-accent-color: #ffcb05; /* Amarelo */
+
+/* Aplicar transição a todos os componentes Ionic */
+ion-content,
+ion-header,
+ion-toolbar,
+ion-footer,
+ion-grid,
+ion-row,
+ion-card,
+ion-card-header,
+ion-card-content,
+ion-card-title,
+ion-card-subtitle,
+ion-button,
+ion-icon,
+ion-label,
+ion-input,
+ion-select,
+ion-text,
+ion-textarea,
+ion-col {
+  transition: background-color 0.4s ease, color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+// Tema Escuro
+.dark-theme {
+  --ion-color-primary: #60a5fa;
+  --ion-color-secondary: #8b5cf6;
+  --ion-color-accent: #f6ad55;
+  --ion-background-color: #1a202c;
+  --ion-text-color: #e2e8f0;
+  --ion-card-background: #2d3748;
+  --ion-card-title-color: #ffffff;
+  --ion-card-subtitle-color: #e2e8f0;
+  /* Transição global para todas as propriedades */
+}
+
+/* Adicione isso no final do arquivo */
+body,
+ion-app {
+  transition: background-color 0.4s ease;
+}
+
+ion-header,
+ion-toolbar,
+ion-content,
+ion-grid,
+ion-row,
+ion-card,
+ion-card-header,
+ion-card-content,
+ion-card-title,
+ion-footer {
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
