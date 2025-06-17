@@ -5,6 +5,12 @@ ion-card {
   justify-content: space-between;
 }
 
+ion-card-header {
+  ion-card-title {
+    color: var(--ion-card-title-color);
+  }
+}
+
 ion-card-content img {
   max-width: 100%;
   height: auto;

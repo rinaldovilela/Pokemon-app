@@ -3,13 +3,15 @@ import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { Pokemon } from 'src/app/core/models/pokemon.model';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-
+import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
   styleUrls: ['./pokemon-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule], // Importar módulos necessários
+  imports: [CommonModule, IonicModule, ThemeToggleComponent], // Importar módulos necessários
 })
 export class PokemonListComponent implements OnInit {
   pokemons: Pokemon[] = [];
@@ -25,9 +27,15 @@ export class PokemonListComponent implements OnInit {
   loadPokemons() {
     this.pokemonService
       .getPokemonList(this.offset, this.limit)
+      .pipe(
+        catchError((error) => {
+          console.error('Erro ao carregar Pokémons:', error);
+          return throwError(() => new Error('Falha na requisição à PokeAPI'));
+        })
+      )
       .subscribe((data) => {
         this.pokemons = data.results;
-        console.log('Pokémons carregados:', this.pokemons); // Para debug
+        console.log('Pokémons carregados:', this.pokemons);
       });
   }
 

@@ -1,15 +1,31 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+// Tema Claro (padrão)
 :root {
-  --ion-color-primary: #3b4cca; /* Azul Pokébola */
-  --ion-color-secondary: #ff0000; /* Vermelho */
-  --ion-color-accent: #ffcb05; /* Amarelo */
-  --ion-color-neutral: #4b5eaa; /* Cinza */
-  --ion-color-error: #b22222; /* Vermelho escuro */
+  --ion-color-primary: #3880ff;
+  --ion-color-secondary: #3dc2ff;
+  --ion-color-accent: #5260ff;
+  --ion-background-color: #f4f5f8;
+  --ion-text-color: #222428;
+  --ion-card-background: #ffffff;
+  --ion-card-title-color: #222428;
+  --ion-card-subtitle-color: #222428;
+  transition: all 0.3s ease-in-out; // Adicionar transição suave
 }
-[data-theme="dark"] {
-  --ion-background-color: #1f2937; /* Cinza escuro */
-  --ion-text-color: #ffffff; /* Branco */
-  --ion-primary-color: #60a5fa; /* Azul claro */
-  --ion-accent-color: #ffcb05; /* Amarelo */
+
+// Tema Escuro
+.dark-theme {
+  --ion-color-primary: #60a5fa;
+  --ion-color-secondary: #8b5cf6;
+  --ion-color-accent: #f6ad55;
+  --ion-background-color: #1a202c;
+  --ion-text-color: #e2e8f0;
+  --ion-card-background: #2d3748;
+  --ion-card-title-color: #ffffff;
+  --ion-card-subtitle-color: #e2e8f0;
+  transition: all 0.3s ease-in-out; // Adicionar transição suave
+}
+
+ion-card {
+  background: var(--ion-card-background);
+  color: var(--ion-text-color);
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out; // Transição específica para ion-card
 }
