@@ -16,7 +16,12 @@ export class ThemeService {
     });
   }
 
+  async initialize() {
+    await this.storage.create(); // Chama create() antes de qualquer operação
+  }
+
   async loadTheme() {
+    await this.initialize();
     const savedTheme = await this.storage.get('darkMode');
     const prefersDark = window.matchMedia(
       '(prefers-color-scheme: dark)'

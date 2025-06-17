@@ -15,6 +15,7 @@
         size-md="6"
         size-lg="4"
         *ngFor="let pokemon of pokemons"
+        (click)="goToDetail(getIdFromUrl(pokemon.url))"
       >
         <ion-card>
           <ion-card-header>
@@ -40,5 +41,5 @@
     <ion-title slot="end"
       >Pokémons - {{ offset + 1 }} a {{ offset + pokemons.length }}</ion-title
     >
-  </ion-toolbar>
-</ion-footer>
+  </ion-toolbar></ion-footer
+>

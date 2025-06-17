@@ -5,11 +5,12 @@ import { PokemonListComponent } from './features/pokemon/components/pokemon-list
 const routes: Routes = [
   {
     path: 'pokemon',
-    component: PokemonListComponent,
+    loadChildren: () =>
+      import('./features/pokemon/pokemon.module').then((m) => m.PokemonModule),
   },
   { path: '', redirectTo: '/pokemon', pathMatch: 'full' },
+  { path: '**', redirectTo: '/pokemon' },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
