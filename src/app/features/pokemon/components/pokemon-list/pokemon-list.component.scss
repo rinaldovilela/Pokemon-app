@@ -16,6 +16,13 @@ ion-card-content img {
   height: auto;
   display: block;
   margin: 0 auto;
+  opacity: 0; // Inicia invisível
+  transition: opacity 0.3s ease-in; // Transição suave
+}
+
+ion-card-content img.pokemon-image {
+  background-color: var(--ion-card-background);
+  min-height: 96px;
 }
 
 @media (max-width: 768px) {

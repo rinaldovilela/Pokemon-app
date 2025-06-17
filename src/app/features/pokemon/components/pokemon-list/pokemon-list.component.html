@@ -15,13 +15,19 @@
         size-md="6"
         size-lg="4"
         *ngFor="let pokemon of pokemons"
+        (click)="goToDetail(getIdFromUrl(pokemon.url))"
       >
         <ion-card>
           <ion-card-header>
             <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <img [src]="getImageUrl(pokemon.url)" alt="{{ pokemon.name }}" />
+            <img
+              [src]="getImageUrl(pokemon.url)"
+              alt="{{ pokemon.name }}"
+              class="pokemon-image"
+              (load)="onImageLoad($event)"
+            />
           </ion-card-content>
         </ion-card>
       </ion-col>
