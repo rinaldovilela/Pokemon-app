@@ -37,4 +37,23 @@
       (favoriteToggled)="toggleFavorite(pokemonDetails.id)"
     ></app-pokemon-card>
   </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="hasError" class="error-message">
+    Ocorreu um erro ao carregar o Pokémon
+  </div>
 </ion-content>
+
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="toastMessage"
+  [color]="toastColor"
+  [duration]="2500"
+  [icon]="toastIcon"
+  [cssClass]="toastCssClass"
+  (didDismiss)="isToastOpen = false"
+  position="top"
+></ion-toast>

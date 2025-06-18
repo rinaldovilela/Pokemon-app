@@ -57,6 +57,8 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   hasPreviousPage: boolean = false; // Adicionado
   isSmallScreen: boolean = false;
   favoriteStates: { [key: number]: boolean } = {};
+  currentPage: number = 1;
+  totalPages: number = 0;
   private favoritesSubscription!: Subscription;
 
   constructor(
@@ -89,13 +91,14 @@ export class PokemonListComponent implements OnInit, OnDestroy {
       .getPokemonList(this.offset, this.limit)
       .subscribe(async (data) => {
         this.pokemons = data.results;
-        this.totalPokemons = data.count; // Atualiza o total
-        this.hasNextPage = !!data.next; // Verifica se tem próxima página
-        this.hasPreviousPage = !!data.previous; // Verifica se tem página anterior
+        this.totalPokemons = data.count;
+        this.totalPages = Math.ceil(this.totalPokemons / this.limit);
+        this.currentPage = Math.floor(this.offset / this.limit) + 1;
+        this.hasNextPage = !!data.next;
+        this.hasPreviousPage = !!data.previous;
         await this.updateFavoriteStates();
       });
   }
-
   private setupFavoritesSubscription() {
     this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
       () => {
@@ -121,6 +124,20 @@ export class PokemonListComponent implements OnInit, OnDestroy {
 
   nextPage() {
     this.offset += this.limit;
+    this.loadPokemons();
+  }
+  firstPage() {
+    this.offset = 0;
+    this.loadPokemons();
+  }
+
+  lastPage() {
+    this.offset = (this.totalPages - 1) * this.limit;
+    this.loadPokemons();
+  }
+
+  goToPage(page: number) {
+    this.offset = (page - 1) * this.limit;
     this.loadPokemons();
   }
 
