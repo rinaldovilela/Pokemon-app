@@ -55,6 +55,9 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   pokemons: Pokemon[] = [];
   offset: number = 0;
   limit: number = 20;
+  totalPokemons: number = 0; // Adicionado
+  hasNextPage: boolean = false; // Adicionado
+  hasPreviousPage: boolean = false; // Adicionado
   isSmallScreen: boolean = false;
   favoriteStates: { [key: number]: boolean } = {};
   private favoritesSubscription!: Subscription;
@@ -89,6 +92,9 @@ export class PokemonListComponent implements OnInit, OnDestroy {
       .getPokemonList(this.offset, this.limit)
       .subscribe(async (data) => {
         this.pokemons = data.results;
+        this.totalPokemons = data.count; // Atualiza o total
+        this.hasNextPage = !!data.next; // Verifica se tem próxima página
+        this.hasPreviousPage = !!data.previous; // Verifica se tem página anterior
         await this.updateFavoriteStates();
       });
   }

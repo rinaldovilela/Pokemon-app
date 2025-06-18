@@ -62,11 +62,11 @@
 <ion-footer>
   <ion-toolbar class="footer-toolbar">
     <ion-buttons slot="start">
-      <ion-button (click)="previousPage()" [disabled]="offset === 0">
+      <ion-button (click)="previousPage()" [disabled]="!hasPreviousPage">
         <ion-icon name="chevron-back" slot="start"></ion-icon>
         Anterior
       </ion-button>
-      <ion-button (click)="nextPage()">
+      <ion-button (click)="nextPage()" [disabled]="!hasNextPage">
         Próximo
         <ion-icon name="chevron-forward" slot="end"></ion-icon>
       </ion-button>

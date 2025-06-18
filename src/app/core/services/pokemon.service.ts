@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, catchError, take } from 'rxjs/operators';
-import { Pokemon, PokemonDetails } from '../models/pokemon.model';
+import {
+  Pokemon,
+  PokemonDetails,
+  PokemonListResponse,
+} from '../models/pokemon.model';
 import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
@@ -28,15 +32,16 @@ export class PokemonService {
   getPokemonList(
     offset: number = 0,
     limit: number = 20
-  ): Observable<{ results: Pokemon[] }> {
+  ): Observable<PokemonListResponse> {
+    // Alterado o tipo de retorno
     return this.http
-      .get<{ results: Pokemon[] }>(
+      .get<PokemonListResponse>(
         `${this.apiUrl}/pokemon?offset=${offset}&limit=${limit}`
       )
       .pipe(
         catchError((error) => {
           console.error('Erro ao buscar lista de Pokémons:', error);
-          return of({ results: [] });
+          return of({ count: 0, next: null, previous: null, results: [] });
         })
       );
   }
