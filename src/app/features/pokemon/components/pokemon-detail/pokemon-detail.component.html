@@ -4,28 +4,37 @@
       <ion-back-button defaultHref="/pokemon"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pokemonDetails?.name | titlecase }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="toggleFavorite(pokemonDetails?.id)"
+        [aria-label]="isFavorite ? 'Desfavoritar Pokémon' : 'Favoritar Pokémon'"
+      >
+        <ion-icon
+          [name]="isFavorite ? 'heart' : 'heart-outline'"
+          class="favorite-icon"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div *ngIf="isLoading" class="loading-container" aria-live="polite">
-    <ion-spinner name="circular"></ion-spinner>
+  <div class="card-container">
+    <app-pokemon-card
+      *ngIf="pokemonDetails && !isLoading && !hasError"
+      [pokemon]="{
+        name: pokemonDetails.name,
+        url: 'https://pokeapi.co/api/v2/pokemon/' + pokemonDetails.id + '/'
+      }"
+      [isFavorite]="isFavorite"
+      [showDetails]="true"
+      [pokemonDetails]="{
+        types: typesFormatted,
+        height: heightInMeters,
+        weight: weightInKg,
+        imageUrl: pokemonDetails.sprites.front_default
+      }"
+      (favoriteToggled)="toggleFavorite(pokemonDetails.id)"
+    ></app-pokemon-card>
   </div>
-  <div *ngIf="hasError" class="error" aria-live="polite">
-    Erro ao carregar os detalhes do Pokémon.
-  </div>
-  <ion-card *ngIf="pokemonDetails && !isLoading && !hasError">
-    <ion-card-header>
-      <ion-card-title>{{ pokemonDetails.name | titlecase }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <img
-        [src]="pokemonDetails.sprites.front_default"
-        alt="{{ pokemonDetails.name }}"
-      />
-      <p><strong>Tipos:</strong> {{ typesFormatted }}</p>
-      <p><strong>Altura:</strong> {{ heightInMeters }} m</p>
-      <p><strong>Peso:</strong> {{ weightInKg }} kg</p>
-    </ion-card-content>
-  </ion-card>
 </ion-content>

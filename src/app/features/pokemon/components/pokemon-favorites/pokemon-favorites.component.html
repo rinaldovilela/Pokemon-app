@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Favoritos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/pokemon"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="circular"></ion-spinner>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message" aria-live="polite">
+    {{ errorMessage }}
+  </div>
+
+  <div
+    *ngIf="!isLoading && !errorMessage && favoriteDetails.length === 0"
+    class="no-favorites"
+  >
+    Nenhum Pokémon favoritado ainda.
+  </div>
+
+  <ion-grid *ngIf="!isLoading && !errorMessage && favoriteDetails.length > 0">
+    <ion-row>
+      <ion-col
+        size="12"
+        size-md="6"
+        size-lg="4"
+        *ngFor="let pokemon of favoriteDetails"
+      >
+        <app-pokemon-card
+          [pokemon]="{
+            name: pokemon.name,
+            url: 'https://pokeapi.co/api/v2/pokemon/' + pokemon.id + '/'
+          }"
+          [isFavorite]="true"
+          [showDetails]="false"
+          [pokemonDetails]="{
+            imageUrl: pokemon.sprites.front_default
+          }"
+          (cardClicked)="goToDetail(pokemon.id)"
+        >
+        </app-pokemon-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

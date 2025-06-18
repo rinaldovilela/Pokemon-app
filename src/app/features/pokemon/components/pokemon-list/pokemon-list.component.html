@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Tela Principal - Pokémons</ion-title>
+    <ion-title>Pokémons</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="goToFavorites()" aria-label="Ver favoritos">
+        <ion-icon name="star"></ion-icon>
+      </ion-button>
       <app-theme-toggle></app-theme-toggle>
     </ion-buttons>
   </ion-toolbar>
@@ -15,36 +18,33 @@
         size-md="6"
         size-lg="4"
         *ngFor="let pokemon of pokemons"
-        (click)="goToDetail(getIdFromUrl(pokemon.url))"
       >
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <img
-              [src]="getImageUrl(pokemon.url)"
-              alt="{{ pokemon.name }}"
-              class="pokemon-image"
-              (load)="onImageLoad($event)"
-            />
-          </ion-card-content>
-        </ion-card>
+        <app-pokemon-card
+          [pokemon]="pokemon"
+          [isFavorite]="favoriteStates[getIdFromUrl(pokemon.url)]"
+          (favoriteToggled)="toggleFavorite($event)"
+          (cardClicked)="goToDetail($event)"
+        ></app-pokemon-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
+  <ion-toolbar class="footer-toolbar">
     <ion-buttons slot="start">
-      <ion-button (click)="previousPage()" [disabled]="offset === 0"
-        >Anterior</ion-button
-      >
-      <ion-button (click)="nextPage()">Próximo</ion-button>
+      <ion-button (click)="previousPage()" [disabled]="!hasPreviousPage">
+        <ion-icon name="chevron-back" slot="start"></ion-icon>
+        Anterior
+      </ion-button>
+      <ion-button (click)="nextPage()" [disabled]="!hasNextPage">
+        Próximo
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title slot="end"
-      >Pokémons - {{ offset + 1 }} a {{ offset + pokemons.length }}</ion-title
-    >
+
+    <div class="footer-range">
+      Pokémons – {{ offset + 1 }} a {{ offset + pokemons.length }}
+    </div>
   </ion-toolbar>
 </ion-footer>

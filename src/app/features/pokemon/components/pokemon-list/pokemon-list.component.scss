@@ -3,30 +3,225 @@ ion-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
+  border-radius: 12px;
+  border: 1px solid rgba(123, 97, 255, 0.25);
+  background: var(--ion-card-background);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 8px rgba(123, 97, 255, 0.2);
 
-ion-card-header {
-  ion-card-title {
-    color: var(--ion-card-title-color);
+  &:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 0 14px rgba(123, 97, 255, 0.5);
   }
 }
 
-ion-card-content img {
-  max-width: 100%;
-  height: auto;
+ion-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-card-title {
+    color: var(--ion-card-title-color);
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    margin: 0 auto;
+    border-radius: 6px;
+    background: rgba(123, 97, 255, 0.05);
+    text-shadow: 0 0 2px rgba(123, 97, 255, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+ion-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img.pokemon-image {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    background-color: transparent;
+    min-height: 96px;
+    opacity: 0;
+    border-radius: 8px;
+    transition: opacity 0.6s ease-in-out, transform 0.3s;
+    box-shadow: 0 0 4px rgba(123, 97, 255, 0.1);
+  }
+
+  img.pokemon-image.loaded {
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 6px rgba(123, 97, 255, 0.2);
+  }
+}
+
+img.pokemon-image {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
   display: block;
   margin: 0 auto;
-  opacity: 0; // Inicia invisível
-  transition: opacity 0.3s ease-in; // Transição suave
-}
-
-ion-card-content img.pokemon-image {
   background-color: var(--ion-card-background);
   min-height: 96px;
+  border-radius: 10px;
+  max-width: 100%;
+  height: auto;
+
+  &.loaded {
+    opacity: 1;
+  }
 }
 
+.skeleton-image {
+  width: 100%;
+  min-height: 96px;
+  background-color: var(--ion-color-step-150);
+  border-radius: 8px;
+  animation: pulse 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsividade preservada */
 @media (max-width: 768px) {
   ion-col {
     padding: 5px;
   }
+}
+
+/* Footer responsivo intacto */
+ion-footer ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  min-height: 48px;
+
+  ion-buttons {
+    display: flex;
+    gap: 4px;
+
+    ion-button {
+      --padding-start: 6px;
+      --padding-end: 6px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+
+  ion-title,
+  .footer-info {
+    font-size: 0.75rem;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    padding-left: 4px;
+  }
+}
+
+@media (max-width: 390px) {
+  ion-footer ion-toolbar {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px 6px;
+
+    ion-buttons {
+      flex: 1 1 auto;
+      justify-content: flex-start;
+    }
+
+    .footer-info {
+      flex: 1 1 auto;
+      text-align: right;
+    }
+  }
+}
+
+@media (max-width: 340px) {
+  ion-footer ion-toolbar {
+    ion-button {
+      font-size: 0.7rem;
+      --padding-start: 4px;
+      --padding-end: 4px;
+    }
+
+    .footer-info {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+/* Theme toggle suporte */
+:host-context(body.ion-color-dark) {
+  ion-card {
+    background: linear-gradient(145deg, #1a1a1a, #111);
+    border-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.04);
+  }
+
+  ion-card-title {
+    color: #ddd;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .footer-info {
+    color: #ccc;
+  }
+}
+
+:host-context(body.ion-color-light) {
+  ion-card {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-color: rgba(123, 97, 255, 0.15);
+    box-shadow: 0 0 10px rgba(123, 97, 255, 0.2);
+  }
+
+  ion-card-title {
+    color: #333;
+    background: rgba(123, 97, 255, 0.1);
+  }
+}
+
+/* Ajustes para o botão de favorito */
+.favorite-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  height: auto;
+  min-height: 24px;
+}
+
+.favorite-icon {
+  font-size: 20px !important;
+  color: var(--ion-color-medium);
+}
+
+.favorite-icon[name="heart"] {
+  color: var(--ion-color-danger);
+}
+
+.favorite-button:hover .favorite-icon {
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
 }

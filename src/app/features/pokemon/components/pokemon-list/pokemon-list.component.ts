@@ -1,23 +1,63 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { Pokemon } from 'src/app/core/models/pokemon.model';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonButton,
+  IonIcon,
+  IonButtons,
+  IonFooter,
+  IonSpinner,
+} from '@ionic/angular/standalone';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pokemon-card.component';
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
   styleUrls: ['./pokemon-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ThemeToggleComponent],
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonButton,
+    IonIcon,
+    IonButtons,
+    IonFooter,
+    ThemeToggleComponent,
+    PokemonCardComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PokemonListComponent implements OnInit {
+export class PokemonListComponent implements OnInit, OnDestroy {
   pokemons: Pokemon[] = [];
   offset: number = 0;
   limit: number = 20;
+  totalPokemons: number = 0; // Adicionado
+  hasNextPage: boolean = false; // Adicionado
+  hasPreviousPage: boolean = false; // Adicionado
   isSmallScreen: boolean = false;
+  favoriteStates: { [key: number]: boolean } = {};
+  private favoritesSubscription!: Subscription;
 
   constructor(
     private pokemonService: PokemonService,
@@ -28,6 +68,11 @@ export class PokemonListComponent implements OnInit {
   ngOnInit() {
     this.loadPokemons();
     this.checkScreenSize();
+    this.setupFavoritesSubscription();
+  }
+
+  ngOnDestroy() {
+    this.favoritesSubscription?.unsubscribe();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -39,13 +84,32 @@ export class PokemonListComponent implements OnInit {
     this.isSmallScreen = window.innerWidth <= 576;
   }
 
-  loadPokemons() {
+  async loadPokemons() {
     this.pokemonService
       .getPokemonList(this.offset, this.limit)
-      .subscribe((data) => {
+      .subscribe(async (data) => {
         this.pokemons = data.results;
-        console.log('Pokémons carregados:', this.pokemons);
+        this.totalPokemons = data.count; // Atualiza o total
+        this.hasNextPage = !!data.next; // Verifica se tem próxima página
+        this.hasPreviousPage = !!data.previous; // Verifica se tem página anterior
+        await this.updateFavoriteStates();
       });
+  }
+
+  private setupFavoritesSubscription() {
+    this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
+      () => {
+        this.updateFavoriteStates();
+      }
+    );
+  }
+
+  private async updateFavoriteStates() {
+    const favorites = await this.pokemonService.getFavorites();
+    this.pokemons.forEach((p) => {
+      const id = this.getIdFromUrl(p.url);
+      this.favoriteStates[id] = favorites.includes(id);
+    });
   }
 
   previousPage() {
@@ -69,6 +133,10 @@ export class PokemonListComponent implements OnInit {
     this.router.navigate(['detail', id], { relativeTo: this.route });
   }
 
+  goToFavorites() {
+    this.router.navigate(['favorites'], { relativeTo: this.route });
+  }
+
   getIdFromUrl(url: string): number {
     const id = url.split('/').filter(Boolean).pop();
     return Number(id);
@@ -76,6 +144,10 @@ export class PokemonListComponent implements OnInit {
 
   onImageLoad(event: Event) {
     const img = event.target as HTMLImageElement;
-    img.style.opacity = '1';
+    img.classList.add('loaded');
+  }
+
+  async toggleFavorite(id: number) {
+    await this.pokemonService.toggleFavorite(id);
   }
 }
