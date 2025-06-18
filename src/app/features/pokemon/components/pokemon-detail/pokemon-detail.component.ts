@@ -11,7 +11,6 @@ import {
   IonContent,
   IonButton,
   IonIcon,
-  IonSpinner,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
@@ -35,7 +34,6 @@ import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pok
     IonContent,
     IonButton,
     IonIcon,
-    IonSpinner,
     PokemonCardComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
