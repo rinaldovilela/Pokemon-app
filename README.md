@@ -2,12 +2,17 @@
 
 Aplicativo mobile desenvolvido com Ionic 7 e Angular 18, consumindo a PokeAPI, para o teste técnico da vaga de Desenvolvedor Full Stack Júnior na BSN.
 
+<div align="center">
+  <img src="./src/assets/Demonstração%20do%20projeto..gif" alt="Demonstração do Projeto" width="400">
+</div>
+
+
 ## Tecnologias
 
 - Ionic 7
 - Angular 18
-- SCSS (Ionic nativo)
 - ESLint (padrão Angular)
+- Ionic Storage
 
 ## Setup
 
@@ -18,3 +23,8 @@ Aplicativo mobile desenvolvido com Ionic 7 e Angular 18, consumindo a PokeAPI, p
 ## Status
 
 - Passo 1: Configuração inicial do projeto concluída.
+- Passo 2: Criação do PokemonService concluída.
+- Passo 3: Implementação da tela principal com lista paginada concluída.
+- Passo 4: Implementação do dark mode com ThemeService concluída.
+- Passo 5: Implementação da tela de detalhes do Pokémon concluída.
+- Passo 6: Implementação da funcionalidade de favoritos concluída.

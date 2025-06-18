@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/pokemon"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pokemonDetails?.name | titlecase }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="toggleFavorite(pokemonDetails?.id)"
+        [aria-label]="isFavorite ? 'Desfavoritar Pokémon' : 'Favoritar Pokémon'"
+      >
+        <ion-icon
+          [name]="isFavorite ? 'heart' : 'heart-outline'"
+          class="favorite-icon"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="card-container">
+    <app-pokemon-card
+      *ngIf="pokemonDetails && !isLoading && !hasError"
+      [pokemon]="{
+        name: pokemonDetails.name,
+        url: 'https://pokeapi.co/api/v2/pokemon/' + pokemonDetails.id + '/'
+      }"
+      [isFavorite]="isFavorite"
+      [showDetails]="true"
+      [pokemonDetails]="{
+        types: typesFormatted,
+        height: heightInMeters,
+        weight: weightInKg,
+        imageUrl: pokemonDetails.sprites.front_default
+      }"
+      (favoriteToggled)="toggleFavorite(pokemonDetails.id)"
+    ></app-pokemon-card>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="hasError" class="error-message">
+    Ocorreu um erro ao carregar o Pokémon
+  </div>
+</ion-content>
+
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="toastMessage"
+  [color]="toastColor"
+  [duration]="2500"
+  [icon]="toastIcon"
+  [cssClass]="toastCssClass"
+  (didDismiss)="isToastOpen = false"
+  position="top"
+></ion-toast>

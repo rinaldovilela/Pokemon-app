@@ -1,0 +1,120 @@
+/* Estilos do container principal */
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px);
+  padding: 20px;
+
+  app-pokemon-card {
+    max-width: 350px;
+    width: 100%;
+  }
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  text-align: center;
+  padding: 20px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.favorite-icon {
+  font-size: 20px !important;
+  color: var(--ion-color-primary);
+}
+
+.favorite-icon[name="heart"] {
+  color: var(--ion-color-danger);
+}
+
+ion-toast {
+  --width: 300px;
+  --max-width: 80%;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  .toast-icon::part(icon) {
+    font-size: 24px;
+  }
+}
+
+.toast-success {
+  --background: var(--ion-color-success);
+  --color: var(--ion-color-success-contrast);
+}
+
+.toast-warning {
+  --background: var(--ion-color-warning);
+  --color: var(--ion-color-warning-contrast);
+}
+
+.toast-danger {
+  --background: var(--ion-color-danger);
+  --color: var(--ion-color-danger-contrast);
+}
+
+@keyframes heartPop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes heartFade {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.toast-heart-pop .toast-icon {
+  animation: heartPop 0.5s ease-out;
+}
+
+.toast-heart-fade .toast-icon {
+  animation: heartFade 0.5s ease-out;
+}
+
+.toast-shake {
+  animation: shake 0.5s ease;
+}
+
+@media (max-width: 576px) {
+  ion-toast {
+    --width: 90%;
+    --max-width: 280px;
+  }
+}

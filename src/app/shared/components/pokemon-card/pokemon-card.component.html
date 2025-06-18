@@ -1,0 +1,33 @@
+<ion-card (click)="onCardClick()">
+  <ion-card-header>
+    <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
+    <ion-button
+      fill="clear"
+      (click)="onFavoriteClick($event)"
+      class="favorite-button"
+      [attr.aria-label]="
+        isFavorite ? 'Desfavoritar Pokémon' : 'Favoritar Pokémon'
+      "
+    >
+      <ion-icon
+        [name]="isFavorite ? 'heart' : 'heart-outline'"
+        class="favorite-icon"
+      ></ion-icon>
+    </ion-button>
+  </ion-card-header>
+  <ion-card-content>
+    <img
+      [src]="pokemonDetails?.imageUrl || getImageUrl(pokemon.url)"
+      [alt]="pokemon.name"
+      loading="lazy"
+      class="pokemon-image"
+      (load)="onImageLoad($event)"
+    />
+
+    <div *ngIf="showDetails" class="details-section">
+      <p><strong>Tipos:</strong> {{ pokemonDetails?.types }}</p>
+      <p><strong>Altura:</strong> {{ pokemonDetails?.height }} m</p>
+      <p><strong>Peso:</strong> {{ pokemonDetails?.weight }} kg</p>
+    </div>
+  </ion-card-content>
+</ion-card>

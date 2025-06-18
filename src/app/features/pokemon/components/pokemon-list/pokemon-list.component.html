@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pokémons</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToFavorites()" aria-label="Ver favoritos">
+        <ion-icon name="star"></ion-icon>
+      </ion-button>
+      <app-theme-toggle></app-theme-toggle>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size="12"
+        size-md="6"
+        size-lg="4"
+        *ngFor="let pokemon of pokemons"
+      >
+        <app-pokemon-card
+          [pokemon]="pokemon"
+          [isFavorite]="favoriteStates[getIdFromUrl(pokemon.url)]"
+          (favoriteToggled)="toggleFavorite($event)"
+          (cardClicked)="goToDetail($event)"
+        ></app-pokemon-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="pagination-toolbar">
+    <div class="pagination-container">
+      <ion-button
+        (click)="firstPage()"
+        [disabled]="!hasPreviousPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Primeira página"
+      >
+        <ion-icon name="play-back"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        (click)="previousPage()"
+        [disabled]="!hasPreviousPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Página anterior"
+      >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+
+      <div class="page-info">Página {{ currentPage }} de {{ totalPages }}</div>
+
+      <ion-button
+        (click)="nextPage()"
+        [disabled]="!hasNextPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Próxima página"
+      >
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        (click)="lastPage()"
+        [disabled]="!hasNextPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Última página"
+      >
+        <ion-icon name="play-forward"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
