@@ -31,20 +31,49 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar class="footer-toolbar">
-    <ion-buttons slot="start">
-      <ion-button (click)="previousPage()" [disabled]="!hasPreviousPage">
-        <ion-icon name="chevron-back" slot="start"></ion-icon>
-        Anterior
+  <ion-toolbar class="pagination-toolbar">
+    <div class="pagination-container">
+      <ion-button
+        (click)="firstPage()"
+        [disabled]="!hasPreviousPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Primeira página"
+      >
+        <ion-icon name="play-back"></ion-icon>
       </ion-button>
-      <ion-button (click)="nextPage()" [disabled]="!hasNextPage">
-        Próximo
-        <ion-icon name="chevron-forward" slot="end"></ion-icon>
-      </ion-button>
-    </ion-buttons>
 
-    <div class="footer-range">
-      Pokémons – {{ offset + 1 }} a {{ offset + pokemons.length }}
+      <ion-button
+        (click)="previousPage()"
+        [disabled]="!hasPreviousPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Página anterior"
+      >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+
+      <div class="page-info">Página {{ currentPage }} de {{ totalPages }}</div>
+
+      <ion-button
+        (click)="nextPage()"
+        [disabled]="!hasNextPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Próxima página"
+      >
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        (click)="lastPage()"
+        [disabled]="!hasNextPage"
+        fill="clear"
+        class="pagination-button"
+        aria-label="Última página"
+      >
+        <ion-icon name="play-forward"></ion-icon>
+      </ion-button>
     </div>
   </ion-toolbar>
 </ion-footer>

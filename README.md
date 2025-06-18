@@ -2,6 +2,8 @@
 
 Aplicativo mobile desenvolvido com Ionic 7 e Angular 18, consumindo a PokeAPI, para o teste técnico da vaga de Desenvolvedor Full Stack Júnior na BSN.
 
+![Demonstração do Projeto](./src/assets/Demonstração%20do%20projeto..gif)
+
 ## Tecnologias
 
 - Ionic 7

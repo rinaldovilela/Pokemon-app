@@ -105,123 +105,54 @@ img.pokemon-image {
   }
 }
 
-/* Footer responsivo intacto */
-ion-footer ion-toolbar {
+/* Substitua o conteúdo do footer por este */
+.pagination-toolbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0 8px;
-  min-height: 48px;
+  padding: 0;
+  min-height: 56px;
+}
 
-  ion-buttons {
-    display: flex;
-    gap: 4px;
+.pagination-container {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 1vw, 8px); /* Unidade dinâmica com valores mínimo e máximo */
+  width: 100%;
+  max-width: 600px;
+  justify-content: center;
+  padding: 0 clamp(8px, 2vw, 16px); /* Padding dinâmico */
+}
 
-    ion-button {
-      --padding-start: 6px;
-      --padding-end: 6px;
-      font-size: 0.75rem;
-      white-space: nowrap;
-    }
+.page-info {
+  font-size: clamp(0.75rem, 2vw, 0.875rem); /* Tamanho de fonte dinâmico */
+  color: var(--ion-text-color);
+  min-width: max-content; /* Ajusta ao conteúdo */
+  margin: 0 clamp(4px, 1vw, 8px); /* Margem dinâmica */
+}
 
-    ion-icon {
-      font-size: 14px;
-    }
-  }
+.pagination-button {
+  --padding-start: clamp(4px, 1vw, 8px);
+  --padding-end: clamp(4px, 1vw, 8px);
+  margin: 0;
 
-  ion-title,
-  .footer-info {
-    font-size: 0.75rem;
-    text-align: right;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 1;
-    padding-left: 4px;
+  ion-icon {
+    font-size: clamp(16px, 4vw, 20px); /* Tamanho do ícone dinâmico */
   }
 }
 
-@media (max-width: 390px) {
-  ion-footer ion-toolbar {
-    flex-wrap: wrap;
-    gap: 4px;
-    padding: 4px 6px;
-
-    ion-buttons {
-      flex: 1 1 auto;
-      justify-content: flex-start;
-    }
-
-    .footer-info {
-      flex: 1 1 auto;
-      text-align: right;
-    }
-  }
-}
-
-@media (max-width: 340px) {
-  ion-footer ion-toolbar {
-    ion-button {
-      font-size: 0.7rem;
-      --padding-start: 4px;
-      --padding-end: 4px;
-    }
-
-    .footer-info {
-      font-size: 0.7rem;
-    }
-  }
-}
-
-/* Theme toggle suporte */
-:host-context(body.ion-color-dark) {
-  ion-card {
-    background: linear-gradient(145deg, #1a1a1a, #111);
-    border-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.04);
+/* Ajustes específicos para telas muito pequenas */
+@media (max-width: 400px) {
+  .pagination-container {
+    gap: 2px;
   }
 
-  ion-card-title {
-    color: #ddd;
-    background: rgba(255, 255, 255, 0.05);
+  .page-info {
+    margin: 0 2px;
+    font-size: 0.7rem;
   }
 
-  .footer-info {
-    color: #ccc;
+  .pagination-button ion-icon {
+    font-size: 14px;
   }
-}
-
-:host-context(body.ion-color-light) {
-  ion-card {
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border-color: rgba(123, 97, 255, 0.15);
-    box-shadow: 0 0 10px rgba(123, 97, 255, 0.2);
-  }
-
-  ion-card-title {
-    color: #333;
-    background: rgba(123, 97, 255, 0.1);
-  }
-}
-
-/* Ajustes para o botão de favorito */
-.favorite-button {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  height: auto;
-  min-height: 24px;
-}
-
-.favorite-icon {
-  font-size: 20px !important;
-  color: var(--ion-color-medium);
-}
-
-.favorite-icon[name="heart"] {
-  color: var(--ion-color-danger);
-}
-
-.favorite-button:hover .favorite-icon {
-  transform: scale(1.2);
-  transition: transform 0.2s ease;
 }

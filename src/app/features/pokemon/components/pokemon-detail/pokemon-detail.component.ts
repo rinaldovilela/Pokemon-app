@@ -11,6 +11,7 @@ import {
   IonContent,
   IonButton,
   IonIcon,
+  IonToast,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
@@ -34,6 +35,7 @@ import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pok
     IonContent,
     IonButton,
     IonIcon,
+    IonToast,
     PokemonCardComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -43,6 +45,11 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   hasError: boolean = false;
   isFavorite: boolean = false;
+  isToastOpen = false;
+  toastMessage = '';
+  toastColor = 'success';
+  toastIcon = 'heart';
+  toastCssClass = '';
   private favoritesSubscription!: Subscription;
 
   constructor(
@@ -82,23 +89,64 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
             this.pokemonDetails = details;
           } else {
             this.hasError = true;
+            this.showErrorToast('Pokémon não encontrado');
           }
           this.isLoading = false;
         },
         error: (err) => {
           this.hasError = true;
           this.isLoading = false;
+          this.showErrorToast('Erro ao carregar detalhes');
         },
       });
     } else {
       this.hasError = true;
       this.isLoading = false;
+      this.showErrorToast('ID inválido');
     }
   }
 
   async toggleFavorite(id?: number) {
     if (!id) return;
-    await this.pokemonService.toggleFavorite(id);
+
+    try {
+      await this.pokemonService.toggleFavorite(id);
+      this.isFavorite = await this.pokemonService.isFavorite(id);
+
+      const pokemonName = this.pokemonDetails?.name || 'Pokémon';
+      if (this.isFavorite) {
+        this.toastIcon = 'heart';
+        this.toastCssClass = 'toast-heart-pop';
+        this.showSuccessToast(`${pokemonName} adicionado aos favoritos!`);
+      } else {
+        this.toastIcon = 'heart-outline';
+        this.toastCssClass = 'toast-heart-fade';
+        this.showWarningToast(`${pokemonName} removido dos favoritos!`);
+      }
+    } catch (error) {
+      this.toastIcon = 'heart';
+      this.toastCssClass = 'toast-shake';
+      this.showErrorToast('Erro ao atualizar favoritos');
+      console.error('Error toggling favorite:', error);
+    }
+  }
+
+  private showSuccessToast(message: string) {
+    this.toastMessage = message;
+    this.toastColor = 'success';
+    this.isToastOpen = true;
+  }
+
+  private showWarningToast(message: string) {
+    this.toastMessage = message;
+    this.toastColor = 'warning';
+    this.isToastOpen = true;
+  }
+
+  private showErrorToast(message: string) {
+    this.toastMessage = message;
+    this.toastColor = 'danger';
+    this.isToastOpen = true;
   }
 
   get typesFormatted(): string {
