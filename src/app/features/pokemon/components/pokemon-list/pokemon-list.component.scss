@@ -213,12 +213,12 @@ ion-footer ion-toolbar {
 }
 
 .favorite-icon {
-  font-size: 20px !important; /* Aumenta o tamanho do ícone para visibilidade */
-  color: var(--ion-color-medium); /* Cor padrão para heart-outline */
+  font-size: 20px !important;
+  color: var(--ion-color-medium);
 }
 
 .favorite-icon[name="heart"] {
-  color: var(--ion-color-danger); /* Cor para heart quando favoritado */
+  color: var(--ion-color-danger);
 }
 
 .favorite-button:hover .favorite-icon {

@@ -38,3 +38,12 @@ ion-icon {
     transform: scale(1.2);
   }
 }
+
+.favorite-icon {
+  font-size: 20px !important;
+  color: var(--ion-color-primary);
+}
+
+.favorite-icon[name="heart"] {
+  color: var(--ion-color-primary);
+}
