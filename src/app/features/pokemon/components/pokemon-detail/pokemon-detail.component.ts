@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,7 @@ import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
 import { PokemonDetails } from 'src/app/core/models/pokemon.model';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -45,20 +46,40 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PokemonDetailComponent implements OnInit {
+export class PokemonDetailComponent implements OnInit, OnDestroy {
   pokemonDetails: PokemonDetails | null = null;
   isLoading: boolean = true;
   hasError: boolean = false;
   isFavorite: boolean = false;
+  private favoritesSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private pokemonService: PokemonService
   ) {
-    // Registrar os ícones que serão usados
     addIcons({ heart, heartOutline });
   }
-  async ngOnInit() {
+
+  ngOnInit() {
+    this.loadPokemonDetails();
+    this.setupFavoritesSubscription();
+  }
+
+  ngOnDestroy() {
+    this.favoritesSubscription?.unsubscribe();
+  }
+
+  private setupFavoritesSubscription() {
+    this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
+      (favorites) => {
+        if (this.pokemonDetails?.id) {
+          this.isFavorite = favorites.includes(this.pokemonDetails.id);
+        }
+      }
+    );
+  }
+
+  private async loadPokemonDetails() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.isFavorite = await this.pokemonService.isFavorite(id);
@@ -85,9 +106,7 @@ export class PokemonDetailComponent implements OnInit {
 
   async toggleFavorite(id?: number) {
     if (!id) return;
-
     await this.pokemonService.toggleFavorite(id);
-    this.isFavorite = await this.pokemonService.isFavorite(id);
   }
 
   get typesFormatted(): string {

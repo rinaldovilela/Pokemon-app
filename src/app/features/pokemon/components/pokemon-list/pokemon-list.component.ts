@@ -1,26 +1,63 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { Pokemon } from 'src/app/core/models/pokemon.model';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonButton,
+  IonIcon,
+  IonButtons,
+  IonFooter,
+  IonSpinner,
+} from '@ionic/angular/standalone';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
   styleUrls: ['./pokemon-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ThemeToggleComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Adiciona suporte a Web Components
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonButton,
+    IonIcon,
+    IonButtons,
+    IonFooter,
+    ThemeToggleComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PokemonListComponent implements OnInit {
+export class PokemonListComponent implements OnInit, OnDestroy {
   pokemons: Pokemon[] = [];
   offset: number = 0;
   limit: number = 20;
   isSmallScreen: boolean = false;
   favoriteStates: { [key: number]: boolean } = {};
+  private favoritesSubscription!: Subscription;
 
   constructor(
     private pokemonService: PokemonService,
@@ -31,6 +68,11 @@ export class PokemonListComponent implements OnInit {
   ngOnInit() {
     this.loadPokemons();
     this.checkScreenSize();
+    this.setupFavoritesSubscription();
+  }
+
+  ngOnDestroy() {
+    this.favoritesSubscription?.unsubscribe();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -47,16 +89,24 @@ export class PokemonListComponent implements OnInit {
       .getPokemonList(this.offset, this.limit)
       .subscribe(async (data) => {
         this.pokemons = data.results;
-        await this.initializeFavoriteStates();
-        console.log('Pokémons carregados:', this.pokemons);
+        await this.updateFavoriteStates();
       });
   }
 
-  async initializeFavoriteStates() {
-    const ids = this.pokemons.map((p) => this.getIdFromUrl(p.url));
-    for (const id of ids) {
-      this.favoriteStates[id] = await this.pokemonService.isFavorite(id);
-    }
+  private setupFavoritesSubscription() {
+    this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
+      () => {
+        this.updateFavoriteStates();
+      }
+    );
+  }
+
+  private async updateFavoriteStates() {
+    const favorites = await this.pokemonService.getFavorites();
+    this.pokemons.forEach((p) => {
+      const id = this.getIdFromUrl(p.url);
+      this.favoriteStates[id] = favorites.includes(id);
+    });
   }
 
   previousPage() {
@@ -96,7 +146,5 @@ export class PokemonListComponent implements OnInit {
 
   async toggleFavorite(id: number) {
     await this.pokemonService.toggleFavorite(id);
-    this.favoriteStates[id] = await this.pokemonService.isFavorite(id);
-    console.log(`Pokémon ${id} favoritado/desfavoritado`);
   }
 }
