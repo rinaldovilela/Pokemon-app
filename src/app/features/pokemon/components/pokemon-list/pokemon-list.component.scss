@@ -77,10 +77,11 @@ img.pokemon-image {
     opacity: 1;
   }
 }
+
 .skeleton-image {
   width: 100%;
   min-height: 96px;
-  background-color: var(--ion-color-step-150); // ou um cinza claro
+  background-color: var(--ion-color-step-150);
   border-radius: 8px;
   animation: pulse 1.2s infinite ease-in-out;
 }
@@ -96,6 +97,7 @@ img.pokemon-image {
     opacity: 0.5;
   }
 }
+
 /* Responsividade preservada */
 @media (max-width: 768px) {
   ion-col {
@@ -200,4 +202,26 @@ ion-footer ion-toolbar {
     color: #333;
     background: rgba(123, 97, 255, 0.1);
   }
+}
+
+/* Ajustes para o botão de favorito */
+.favorite-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  height: auto;
+  min-height: 24px;
+}
+
+.favorite-icon {
+  font-size: 20px !important; /* Aumenta o tamanho do ícone para visibilidade */
+  color: var(--ion-color-medium); /* Cor padrão para heart-outline */
+}
+
+.favorite-icon[name="heart"] {
+  color: var(--ion-color-danger); /* Cor para heart quando favoritado */
+}
+
+.favorite-button:hover .favorite-icon {
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
 }

@@ -33,23 +33,20 @@ export class PokemonFavoritesComponent implements OnInit {
   async loadFavorites() {
     this.isLoading = true;
     this.errorMessage = null;
+    this.favoriteDetails = []; // Limpar array antes de carregar
     try {
       this.favoriteIds = await this.pokemonService.getFavorites();
       if (this.favoriteIds.length > 0) {
-        const detailObservables = this.favoriteIds.map((id) =>
-          this.pokemonService.getPokemonDetails(id).pipe(
-            catchError((error) => {
-              console.error(`Erro ao carregar Pokémon ID ${id}:`, error);
-              return [];
-            })
-          )
-        );
-        const details = await Promise.all(
-          detailObservables.map((obs) => obs.toPromise())
-        );
-        this.favoriteDetails = details.filter(
-          (d): d is PokemonDetails => !!d && d.id !== undefined
-        );
+        for (const id of this.favoriteIds) {
+          const details = await this.pokemonService
+            .getPokemonDetails(id)
+            .toPromise();
+          if (details && 'id' in details) {
+            this.favoriteDetails.push(details);
+          } else {
+            console.warn(`Detalhes inválidos para Pokémon ID ${id}`);
+          }
+        }
       }
     } catch (error) {
       this.errorMessage = 'Erro ao carregar favoritos. Tente novamente.';

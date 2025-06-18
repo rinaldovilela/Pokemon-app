@@ -2,6 +2,9 @@
   <ion-toolbar>
     <ion-title>Pokémons</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="goToFavorites()" aria-label="Ver favoritos">
+        <ion-icon name="star"></ion-icon>
+      </ion-button>
       <app-theme-toggle></app-theme-toggle>
     </ion-buttons>
   </ion-toolbar>
@@ -21,11 +24,15 @@
           <ion-card-header>
             <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
             <ion-button
-              slot="end"
               fill="clear"
               (click)="
                 toggleFavorite(getIdFromUrl(pokemon.url));
                 $event.stopPropagation()
+              "
+              [aria-label]="
+                favoriteStates[getIdFromUrl(pokemon.url)]
+                  ? 'Desfavoritar Pokémon'
+                  : 'Favoritar Pokémon'
               "
             >
               <ion-icon

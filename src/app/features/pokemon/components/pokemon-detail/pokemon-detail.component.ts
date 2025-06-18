@@ -2,51 +2,92 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonSpinner,
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { heart, heartOutline } from 'ionicons/icons';
 import { PokemonDetails } from 'src/app/core/models/pokemon.model';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-pokemon-detail',
   templateUrl: './pokemon-detail.component.html',
   styleUrls: ['./pokemon-detail.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonSpinner,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PokemonDetailComponent implements OnInit {
-  pokemonDetails: PokemonDetails | null = null; // null antes do carregamento ou em caso de erro
+  pokemonDetails: PokemonDetails | null = null;
   isLoading: boolean = true;
   hasError: boolean = false;
+  isFavorite: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private pokemonService: PokemonService
-  ) {}
-
-  ngOnInit() {
+  ) {
+    // Registrar os ícones que serão usados
+    addIcons({ heart, heartOutline });
+  }
+  async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Carregando detalhes do Pokémon com ID:', id);
     if (id) {
+      this.isFavorite = await this.pokemonService.isFavorite(id);
+
       this.pokemonService.getPokemonDetails(id).subscribe({
         next: (details) => {
           if (details && details.id) {
             this.pokemonDetails = details;
           } else {
             this.hasError = true;
-            console.error('Invalid Pokémon details:', details);
           }
           this.isLoading = false;
         },
         error: (err) => {
           this.hasError = true;
           this.isLoading = false;
-          console.error('Erro ao carregar detalhes:', err);
         },
       });
     } else {
       this.hasError = true;
       this.isLoading = false;
-      console.error('ID inválido fornecido:', id);
     }
+  }
+
+  async toggleFavorite(id?: number) {
+    if (!id) return;
+
+    await this.pokemonService.toggleFavorite(id);
+    this.isFavorite = await this.pokemonService.isFavorite(id);
   }
 
   get typesFormatted(): string {
