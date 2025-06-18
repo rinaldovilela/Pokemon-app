@@ -1,18 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonSpinner,
+  IonBackButton,
+  IonButtons,
+} from '@ionic/angular/standalone';
 import { PokemonDetails } from 'src/app/core/models/pokemon.model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { from } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pokemon-card.component';
 
 @Component({
   selector: 'app-pokemon-favorites',
   templateUrl: './pokemon-favorites.component.html',
   styleUrls: ['./pokemon-favorites.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonSpinner,
+    IonBackButton,
+    IonButtons,
+    PokemonCardComponent,
+  ],
 })
 export class PokemonFavoritesComponent implements OnInit {
   favoriteIds: number[] = [];
@@ -33,7 +64,7 @@ export class PokemonFavoritesComponent implements OnInit {
   async loadFavorites() {
     this.isLoading = true;
     this.errorMessage = null;
-    this.favoriteDetails = []; // Limpar array antes de carregar
+    this.favoriteDetails = [];
     try {
       this.favoriteIds = await this.pokemonService.getFavorites();
       if (this.favoriteIds.length > 0) {

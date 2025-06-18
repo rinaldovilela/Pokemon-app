@@ -24,7 +24,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Subscription } from 'rxjs';
-
+import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pokemon-card.component';
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
@@ -39,15 +39,12 @@ import { Subscription } from 'rxjs';
     IonGrid,
     IonRow,
     IonCol,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
     IonButton,
     IonIcon,
     IonButtons,
     IonFooter,
     ThemeToggleComponent,
+    PokemonCardComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
