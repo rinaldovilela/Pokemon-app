@@ -1,0 +1,20 @@
+ion-card {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.no-favorites {
+  text-align: center;
+  padding: 20px;
+  color: var(--ion-color-medium);
+}

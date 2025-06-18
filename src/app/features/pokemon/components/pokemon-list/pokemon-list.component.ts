@@ -18,6 +18,7 @@ export class PokemonListComponent implements OnInit {
   offset: number = 0;
   limit: number = 20;
   isSmallScreen: boolean = false;
+  favoriteStates: { [key: number]: boolean } = {}; // Estado local dos favoritos
 
   constructor(
     private pokemonService: PokemonService,
@@ -28,6 +29,7 @@ export class PokemonListComponent implements OnInit {
   ngOnInit() {
     this.loadPokemons();
     this.checkScreenSize();
+    this.initializeFavoriteStates();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -39,11 +41,19 @@ export class PokemonListComponent implements OnInit {
     this.isSmallScreen = window.innerWidth <= 576;
   }
 
+  async initializeFavoriteStates() {
+    const ids = this.pokemons.map((p) => this.getIdFromUrl(p.url));
+    for (const id of ids) {
+      this.favoriteStates[id] = await this.pokemonService.isFavorite(id);
+    }
+  }
+
   loadPokemons() {
     this.pokemonService
       .getPokemonList(this.offset, this.limit)
       .subscribe((data) => {
         this.pokemons = data.results;
+        this.initializeFavoriteStates();
         console.log('Pokémons carregados:', this.pokemons);
       });
   }
@@ -76,8 +86,12 @@ export class PokemonListComponent implements OnInit {
 
   onImageLoad(event: Event) {
     const img = event.target as HTMLImageElement;
-    img.style.opacity = '1';
+    img.classList.add('loaded');
   }
 
-
+  async toggleFavorite(id: number) {
+    await this.pokemonService.toggleFavorite(id);
+    this.favoriteStates[id] = await this.pokemonService.isFavorite(id);
+    console.log(`Pokémon ${id} favoritado/desfavoritado`);
+  }
 }
