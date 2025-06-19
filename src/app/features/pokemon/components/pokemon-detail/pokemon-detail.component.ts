@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // Adicione Router
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -33,8 +33,7 @@ import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pok
     IonBackButton,
     IonTitle,
     IonContent,
-    IonButton,
-    IonIcon,
+
     IonToast,
     PokemonCardComponent,
   ],
@@ -50,16 +49,22 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
   toastColor = 'success';
   toastIcon = 'heart';
   toastCssClass = '';
+  backRoute: string = '/'; // Rota padrão caso não haja state
   private favoritesSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private pokemonService: PokemonService
+    private pokemonService: PokemonService,
+    private router: Router // Adicione Router
   ) {
     addIcons({ heart, heartOutline });
   }
 
   ngOnInit() {
+    // Recuperar a rota de origem do state ou usar a padrão
+    const navigation = this.router.getCurrentNavigation();
+    this.backRoute = navigation?.extras.state?.['from'] || '/pokemon';
+
     this.loadPokemonDetails();
     this.setupFavoritesSubscription();
   }
