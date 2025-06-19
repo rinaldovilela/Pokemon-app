@@ -4,17 +4,19 @@
 
 O projeto segue uma arquitetura modular com Angular:
 
-- `core`: Serviços e modelos compartilhados (ex.: `PokemonService`, `ThemeService`, `pokemon.model.ts`).
-- `features`: Módulos de funcionalidades (ex.: `PokemonListComponent`, `PokemonDetailComponent`, `PokemonFavoritesComponent`, `ThemeToggleComponent` como standalone).
-- `shared`: Componentes e pipes reutilizáveis.
+- `core`: Serviços e modelos compartilhados (ex.: `PokemonService`, `ThemeService`, `pokemon.model.ts`)
+- `features`: Módulos de funcionalidades (ex.: `PokemonListComponent`, `PokemonDetailComponent`, `PokemonFavoritesComponent`, `ThemeToggleComponent` como standalone)
+- `shared`: Componentes e pipes reutilizáveis
 
 ### Gerenciamento de Navegação
 
 ```mermaid
-graph LR
-  A[/pokemon] --> B[/pokemon/favorites]
-  B --> C[/pokemon/detail/id]
-  C -- Voltar --> B
+graph TD
+    A[core] -->|Serviços| B[features]
+    A -->|Modelos| C[shared]
+    B -->|Componentes| C
+
+
 ## Configuração do Ambiente
 
 - Node.js: v18.x
