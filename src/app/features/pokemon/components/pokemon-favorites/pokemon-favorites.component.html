@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Favoritos</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/pokemon"></ion-back-button>
+      <ion-back-button [defaultHref]="backRoute"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -42,8 +42,7 @@
             imageUrl: pokemon.sprites.front_default
           }"
           (cardClicked)="goToDetail(pokemon.id)"
-        >
-        </app-pokemon-card>
+        ></app-pokemon-card>
       </ion-col>
     </ion-row>
   </ion-grid>

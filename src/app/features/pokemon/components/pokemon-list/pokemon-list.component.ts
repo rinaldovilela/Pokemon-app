@@ -25,6 +25,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pokemon-card.component';
+
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
@@ -52,9 +53,9 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   pokemons: Pokemon[] = [];
   offset: number = 0;
   limit: number = 20;
-  totalPokemons: number = 0; // Adicionado
-  hasNextPage: boolean = false; // Adicionado
-  hasPreviousPage: boolean = false; // Adicionado
+  totalPokemons: number = 0;
+  hasNextPage: boolean = false;
+  hasPreviousPage: boolean = false;
   isSmallScreen: boolean = false;
   favoriteStates: { [key: number]: boolean } = {};
   currentPage: number = 1;
@@ -99,6 +100,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
         await this.updateFavoriteStates();
       });
   }
+
   private setupFavoritesSubscription() {
     this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
       () => {
@@ -126,6 +128,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     this.offset += this.limit;
     this.loadPokemons();
   }
+
   firstPage() {
     this.offset = 0;
     this.loadPokemons();
@@ -147,11 +150,17 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   }
 
   goToDetail(id: number) {
-    this.router.navigate(['detail', id], { relativeTo: this.route });
+    this.router.navigate(['detail', id], {
+      relativeTo: this.route,
+      state: { from: '/pokemon' }, // Ajustado para /pokemon
+    });
   }
 
   goToFavorites() {
-    this.router.navigate(['favorites'], { relativeTo: this.route });
+    this.router.navigate(['favorites'], {
+      relativeTo: this.route,
+      state: { from: '/pokemon' },
+    });
   }
 
   getIdFromUrl(url: string): number {

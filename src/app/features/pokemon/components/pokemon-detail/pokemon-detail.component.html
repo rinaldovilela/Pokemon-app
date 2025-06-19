@@ -1,20 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/pokemon"></ion-back-button>
+      <ion-back-button [defaultHref]="backRoute"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pokemonDetails?.name | titlecase }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button
-        (click)="toggleFavorite(pokemonDetails?.id)"
-        [aria-label]="isFavorite ? 'Desfavoritar Pokémon' : 'Favoritar Pokémon'"
-      >
-        <ion-icon
-          [name]="isFavorite ? 'heart' : 'heart-outline'"
-          class="favorite-icon"
-        ></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
