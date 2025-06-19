@@ -8,15 +8,12 @@ O projeto segue uma arquitetura modular com Angular:
 - `features`: Módulos de funcionalidades (ex.: `PokemonListComponent`, `PokemonDetailComponent`, `PokemonFavoritesComponent`, `ThemeToggleComponent` como standalone)
 - `shared`: Componentes e pipes reutilizáveis
 
-### Estrutura Modular
+### Estrutura Modular 
 ```mermaid
 graph TD
-    A[Core] -->|Fornece| B[Features]
-    A -->|Compartilha| C[Shared]
-    B -->|Utiliza| C
-    style A fill:#f9f,stroke:#333
-    style B fill:#bbf,stroke:#333
-    style C fill:#9f9,stroke:#333
+    A[Core] --> B[Features]
+    A --> C[Shared]
+    B --> C
 
 
 ## Configuração do Ambiente
