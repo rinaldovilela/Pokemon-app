@@ -9,11 +9,10 @@ O projeto segue uma arquitetura modular com Angular:
 - `shared`: Componentes e pipes reutilizáveis
 
 ### Estrutura Modular 
-```mermaid
 graph TD
-    A[Core] --> B[Features]
-    A --> C[Shared]
-    B --> C
+  A[Core] --> B[Features]
+  A --> C[Shared]
+  B --> C[Configuração do Ambiente]
 
 
 ## Configuração do Ambiente
