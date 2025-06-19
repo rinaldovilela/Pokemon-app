@@ -8,19 +8,13 @@
   --ion-card-background: #ffffff;
   --ion-card-title-color: #222428;
   --ion-card-subtitle-color: #222428;
-  --font-family-base: "Roboto", sans-serif; // Fonte padrão
-  --font-size-base: clamp(16px, 2vw, 18px); // Tamanho base responsivo
-  --font-size-title: clamp(1rem, 4vw, 1.2rem); // Tamanho para títulos
-  --font-size-title-sm: clamp(
-    0.9rem,
-    3.5vw,
-    1rem
-  ); // Tamanho para títulos em telas pequenas
+  --font-family-base: "Roboto", sans-serif;
+  --font-size-base: clamp(16px, 2vw, 18px);
+  --font-size-title: clamp(1rem, 4vw, 1.2rem);
+  --font-size-title-sm: clamp(0.9rem, 3.5vw, 1rem);
   --font-size-body: clamp(0.875rem, 2.5vw, 1rem);
-  /* Transição global para todas as propriedades */
 }
 
-/* Aplicar transição a todos os componentes Ionic */
 ion-content,
 ion-header,
 ion-toolbar,
@@ -44,7 +38,6 @@ ion-col {
     border-color 0.3s ease;
 }
 
-// Tema Escuro
 .dark-theme {
   --ion-color-primary: #60a5fa;
   --ion-color-secondary: #8b5cf6;
@@ -54,10 +47,8 @@ ion-col {
   --ion-card-background: #2d3748;
   --ion-card-title-color: #ffffff;
   --ion-card-subtitle-color: #e2e8f0;
-  /* Transição global para todas as propriedades */
 }
 
-/* Adicione isso no final do arquivo */
 body,
 ion-app {
   transition: background-color 0.4s ease;
