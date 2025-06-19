@@ -8,6 +8,13 @@ O projeto segue uma arquitetura modular com Angular:
 - `features`: Módulos de funcionalidades (ex.: `PokemonListComponent`, `PokemonDetailComponent`, `PokemonFavoritesComponent`, `ThemeToggleComponent` como standalone).
 - `shared`: Componentes e pipes reutilizáveis.
 
+### Gerenciamento de Navegação
+
+```mermaid
+graph LR
+  A[/pokemon] --> B[/pokemon/favorites]
+  B --> C[/pokemon/detail/id]
+  C -- Voltar --> B
 ## Configuração do Ambiente
 
 - Node.js: v18.x
@@ -23,3 +30,4 @@ O projeto segue uma arquitetura modular com Angular:
 - **Dark Mode**: Implementado com `ThemeService` usando `BehaviorSubject` e `Ionic Storage`, com variáveis CSS e transição suave de 0.3s.
 - **Tela de Detalhes**: Implementada com `PokemonDetailComponent` standalone, navegando por ID via rotas, com tratamento de carregamento, erros, e animações fade-in.
 - **Favoritos**: Implementada com `PokemonFavoritesComponent` standalone, usando `PokemonService` para gerenciar favoritos via Ionic Storage, com botões visuais para favoritar/desfavoritar na lista principal e navegação para a lista de favoritos. O `slot="end"` foi removido do `<ion-button>` para corrigir problemas de visibilidade.
+```
