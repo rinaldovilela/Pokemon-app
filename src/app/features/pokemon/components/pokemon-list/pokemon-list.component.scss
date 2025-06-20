@@ -179,3 +179,13 @@ ion-card-content {
     font-size: 14px;
   }
 }
+
+.page-info {
+  min-width: max-content; // Evita quebra de layout
+  font-size: clamp(0.75rem, 3vw, 0.875rem); // Responsividade controlada
+}
+
+ion-spinner {
+  width: 16px;
+  height: 16px;
+}
