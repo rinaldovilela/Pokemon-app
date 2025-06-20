@@ -95,12 +95,11 @@ export class PokemonListComponent implements OnInit, OnDestroy {
         this.totalPokemons = data.count;
         this.totalPages = Math.ceil(this.totalPokemons / this.limit);
         this.currentPage = Math.floor(this.offset / this.limit) + 1;
-        this.hasNextPage = !!data.next;
-        this.hasPreviousPage = !!data.previous;
+        this.hasNextPage = this.offset + this.limit < this.totalPokemons;
+        this.hasPreviousPage = this.offset > 0;
         await this.updateFavoriteStates();
       });
   }
-
   private setupFavoritesSubscription() {
     this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
       () => {
