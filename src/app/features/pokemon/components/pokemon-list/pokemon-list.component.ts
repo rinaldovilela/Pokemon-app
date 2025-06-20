@@ -23,7 +23,7 @@ import {
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pokemon-card.component';
 
 @Component({
@@ -62,6 +62,8 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   totalPages: number = 0;
   private favoritesSubscription!: Subscription;
   public loading: boolean = true;
+  private navDebounce = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private pokemonService: PokemonService,
@@ -75,6 +77,8 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     this.setupFavoritesSubscription(); // Adicione esta linha
   }
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.favoritesSubscription?.unsubscribe();
   }
 
@@ -91,38 +95,50 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     try {
-      const data = await this.pokemonService
+      type PokemonListResponse = {
+        count: number;
+        next: string | null;
+        previous: string | null;
+        results: Pokemon[];
+      };
+
+      const data = (await this.pokemonService
         .getPokemonList(this.offset, this.limit)
-        .toPromise();
+        .pipe(takeUntil(this.destroy$))
+        .toPromise()) as PokemonListResponse;
 
       if (data) {
-        // Cálculos síncronos e atômicos
+        // Cálculos otimizados
         this.totalPokemons = data.count;
-        this.totalPages = Math.ceil(this.totalPokemons / this.limit) || 1; // Fallback 1
-        this.currentPage = Math.max(
-          1,
-          Math.floor(this.offset / this.limit) + 1
-        ); // Mínimo 1
+        this.totalPages = Math.max(1, Math.ceil(data.count / this.limit));
+        this.currentPage = Math.min(
+          this.totalPages,
+          Math.max(1, Math.floor(this.offset / this.limit) + 1)
+        );
 
         this.pokemons = data.results;
-        this.hasNextPage = this.offset + this.limit < this.totalPokemons;
-        this.hasPreviousPage = this.offset > 0;
+        this.hasNextPage = !!data.next;
+        this.hasPreviousPage = !!data.previous;
 
         await this.updateFavoriteStates();
-      } else {
-        this.totalPokemons = 0;
-        this.totalPages = 1;
-        this.currentPage = 1;
-        this.pokemons = [];
-        this.hasNextPage = false;
-        this.hasPreviousPage = false;
       }
     } catch (error) {
-      console.error('Erro:', error);
-      this.totalPages = 1; // Garante valor seguro
-      this.currentPage = 1;
+      console.error('Erro ao carregar:', error);
+      this.setSafeFallbackState();
     } finally {
       this.loading = false;
+    }
+  }
+  async nextPage() {
+    if (this.navDebounce || !this.hasNextPage) return;
+
+    this.navDebounce = true;
+    this.offset += this.limit;
+
+    try {
+      await this.loadPokemons();
+    } finally {
+      this.navDebounce = false;
     }
   }
 
@@ -149,10 +165,10 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     }
   }
 
-  nextPage() {
-    this.offset += this.limit;
-    this.loadPokemons();
-  }
+  // nextPage() {
+  //   this.offset += this.limit;
+  //   this.loadPokemons();
+  // }
 
   firstPage() {
     this.offset = 0;
@@ -200,5 +216,12 @@ export class PokemonListComponent implements OnInit, OnDestroy {
 
   async toggleFavorite(id: number) {
     await this.pokemonService.toggleFavorite(id);
+  }
+
+  private setSafeFallbackState() {
+    this.totalPages = Math.max(1, this.totalPages); // Garante mínimo 1
+    this.currentPage = Math.max(1, Math.min(this.currentPage, this.totalPages));
+    this.hasNextPage = this.offset + this.limit < this.totalPokemons;
+    this.hasPreviousPage = this.offset > 0;
   }
 }
