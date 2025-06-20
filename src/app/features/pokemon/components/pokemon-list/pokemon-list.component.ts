@@ -61,6 +61,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   totalPages: number = 0;
   private favoritesSubscription!: Subscription;
+  public loading: boolean = true;
 
   constructor(
     private pokemonService: PokemonService,
@@ -71,7 +72,6 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadPokemons();
     this.checkScreenSize();
-    this.setupFavoritesSubscription();
   }
 
   ngOnDestroy() {
@@ -88,24 +88,42 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   }
 
   async loadPokemons() {
-    this.pokemonService
-      .getPokemonList(this.offset, this.limit)
-      .subscribe(async (data) => {
-        this.pokemons = data.results;
+    this.loading = true;
+
+    try {
+      const data = await this.pokemonService
+        .getPokemonList(this.offset, this.limit)
+        .toPromise();
+
+      if (data) {
+        // Cálculos síncronos e atômicos
         this.totalPokemons = data.count;
-        this.totalPages = Math.ceil(this.totalPokemons / this.limit);
-        this.currentPage = Math.floor(this.offset / this.limit) + 1;
+        this.totalPages = Math.ceil(this.totalPokemons / this.limit) || 1; // Fallback 1
+        this.currentPage = Math.max(
+          1,
+          Math.floor(this.offset / this.limit) + 1
+        ); // Mínimo 1
+
+        this.pokemons = data.results;
         this.hasNextPage = this.offset + this.limit < this.totalPokemons;
         this.hasPreviousPage = this.offset > 0;
+
         await this.updateFavoriteStates();
-      });
-  }
-  private setupFavoritesSubscription() {
-    this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
-      () => {
-        this.updateFavoriteStates();
+      } else {
+        this.totalPokemons = 0;
+        this.totalPages = 1;
+        this.currentPage = 1;
+        this.pokemons = [];
+        this.hasNextPage = false;
+        this.hasPreviousPage = false;
       }
-    );
+    } catch (error) {
+      console.error('Erro:', error);
+      this.totalPages = 1; // Garante valor seguro
+      this.currentPage = 1;
+    } finally {
+      this.loading = false;
+    }
   }
 
   private async updateFavoriteStates() {
