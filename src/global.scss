@@ -36,12 +36,43 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import "@ionic/angular/css/palettes/dark.system.css";
+/* Otimizações para transição de tema */
+/* Otimizações para transição de tema - Versão sem !important */
+
+/* Transições padrão */
+body {
+  &,
+  ion-app,
+  ion-content,
+  ion-header,
+  ion-toolbar,
+  ion-footer,
+  ion-card {
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  }
+}
+
+/* Estado de mudança de tema - desativa transições */
+body.theme-changing {
+  transition: none;
+
+  ion-app,
+  ion-content,
+  ion-header,
+  ion-toolbar,
+  ion-footer,
+  ion-card {
+    transition: none;
+  }
+}
+
+/* Estilos específicos para componentes */
 ion-app,
-ion-content,
-ion-header,
-ion-toolbar,
-ion-footer {
-  background: var(--ion-background-color);
-  color: var(--ion-text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+ion-content {
+  transition-property: background-color, color;
+}
+
+ion-card {
+  transition-property: background-color, box-shadow;
 }
