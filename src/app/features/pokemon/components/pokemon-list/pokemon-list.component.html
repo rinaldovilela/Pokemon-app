@@ -38,7 +38,7 @@
     <div class="pagination-container">
       <ion-button
         (click)="firstPage()"
-        [disabled]="!hasPreviousPage"
+        [disabled]="!hasPreviousPage || loading"
         fill="clear"
         class="pagination-button"
         aria-label="Primeira página"
@@ -48,7 +48,7 @@
 
       <ion-button
         (click)="previousPage()"
-        [disabled]="!hasPreviousPage"
+        [disabled]="!hasPreviousPage || loading"
         fill="clear"
         class="pagination-button"
         aria-label="Página anterior"
@@ -60,7 +60,7 @@
 
       <ion-button
         (click)="nextPage()"
-        [disabled]="!hasNextPage"
+        [disabled]="!hasNextPage || loading"
         fill="clear"
         class="pagination-button"
         aria-label="Próxima página"
@@ -70,7 +70,7 @@
 
       <ion-button
         (click)="lastPage()"
-        [disabled]="!hasNextPage"
+        [disabled]="!hasNextPage || loading"
         fill="clear"
         class="pagination-button"
         aria-label="Última página"
