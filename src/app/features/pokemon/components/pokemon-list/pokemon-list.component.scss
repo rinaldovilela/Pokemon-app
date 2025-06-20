@@ -181,11 +181,10 @@ ion-card-content {
 }
 
 .page-info {
-  min-width: max-content; // Evita quebra de layout
-  font-size: clamp(0.75rem, 3vw, 0.875rem); // Responsividade controlada
-}
+  transition: opacity 0.2s ease;
 
-ion-spinner {
-  width: 16px;
-  height: 16px;
+  &:empty:before {
+    content: "...";
+    opacity: 0.7;
+  }
 }
