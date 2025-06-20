@@ -95,36 +95,23 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     try {
-      type PokemonListResponse = {
-        count: number;
-        next: string | null;
-        previous: string | null;
-        results: Pokemon[];
-      };
-
-      const data = (await this.pokemonService
+      const data = await this.pokemonService
         .getPokemonList(this.offset, this.limit)
         .pipe(takeUntil(this.destroy$))
-        .toPromise()) as PokemonListResponse;
+        .toPromise();
 
-      if (data) {
-        // Cálculos otimizados
-        this.totalPokemons = data.count;
-        this.totalPages = Math.max(1, Math.ceil(data.count / this.limit));
-        this.currentPage = Math.min(
-          this.totalPages,
-          Math.max(1, Math.floor(this.offset / this.limit) + 1)
-        );
+      this.totalPokemons = data?.count || 0;
+      this.totalPages = Math.max(1, Math.ceil(this.totalPokemons / this.limit));
+      this.currentPage = Math.max(1, Math.floor(this.offset / this.limit) + 1);
 
-        this.pokemons = data.results;
-        this.hasNextPage = !!data.next;
-        this.hasPreviousPage = !!data.previous;
+      this.pokemons = data?.results || [];
+      this.hasNextPage = !!data?.next;
+      this.hasPreviousPage = !!data?.previous;
 
-        await this.updateFavoriteStates();
-      }
+      if (data) await this.updateFavoriteStates();
     } catch (error) {
-      console.error('Erro ao carregar:', error);
-      this.setSafeFallbackState();
+      this.totalPages = Math.max(1, this.totalPages);
+      this.currentPage = Math.max(1, this.currentPage);
     } finally {
       this.loading = false;
     }
