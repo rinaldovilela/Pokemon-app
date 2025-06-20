@@ -56,7 +56,10 @@
         <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
 
-      <div class="page-info">Página {{ currentPage }} de {{ totalPages }}</div>
+      <div class="page-info" [class.loading]="loading">
+        Página {{ loading ? currentPage : currentPage }} de
+        {{ loading ? totalPages : totalPages }}
+      </div>
 
       <ion-button
         (click)="nextPage()"
