@@ -72,8 +72,8 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadPokemons();
     this.checkScreenSize();
+    this.setupFavoritesSubscription(); // Adicione esta linha
   }
-
   ngOnDestroy() {
     this.favoritesSubscription?.unsubscribe();
   }
@@ -132,6 +132,14 @@ export class PokemonListComponent implements OnInit, OnDestroy {
       const id = this.getIdFromUrl(p.url);
       this.favoriteStates[id] = favorites.includes(id);
     });
+  }
+
+  private setupFavoritesSubscription() {
+    this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
+      () => {
+        this.updateFavoriteStates();
+      }
+    );
   }
 
   previousPage() {
