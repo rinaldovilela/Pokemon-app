@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -16,7 +16,8 @@ import {
 import { PokemonDetails } from 'src/app/core/models/pokemon.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PokemonCardComponent } from 'src/app/shared/components/pokemon-card/pokemon-card.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Adicionado
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-favorites',
@@ -37,14 +38,15 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Adicionado
     IonButtons,
     PokemonCardComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Adicionado
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PokemonFavoritesComponent implements OnInit {
+export class PokemonFavoritesComponent implements OnInit, OnDestroy {
   favoriteIds: number[] = [];
   favoriteDetails: PokemonDetails[] = [];
   isLoading: boolean = true;
   errorMessage: string | null = null;
-  backRoute: string = '/pokemon'; // Rota padrão ajustada para /pokemon
+  backRoute: string = '/pokemon';
+  private favoritesSubscription!: Subscription;
 
   constructor(
     private pokemonService: PokemonService,
@@ -53,12 +55,24 @@ export class PokemonFavoritesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Recuperar a rota de origem, se disponível
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state?.['from']) {
       this.backRoute = navigation.extras.state['from'];
     }
     this.loadFavorites();
+    this.setupFavoritesSubscription();
+  }
+
+  ngOnDestroy() {
+    this.favoritesSubscription?.unsubscribe();
+  }
+
+  private setupFavoritesSubscription() {
+    this.favoritesSubscription = this.pokemonService.favorites$.subscribe(
+      () => {
+        this.loadFavorites();
+      }
+    );
   }
 
   async loadFavorites() {
@@ -75,25 +89,24 @@ export class PokemonFavoritesComponent implements OnInit {
         this.favoriteDetails = details.filter(
           (detail): detail is PokemonDetails => !!detail && 'id' in detail
         );
-        if (this.favoriteDetails.length !== this.favoriteIds.length) {
-          console.warn(
-            'Alguns detalhes de Pokémon não foram carregados corretamente'
-          );
-        }
       }
     } catch (error) {
       this.errorMessage = 'Erro ao carregar favoritos. Tente novamente.';
-      console.error('Erro geral ao carregar favoritos:', error);
+      console.error('Erro ao carregar favoritos:', error);
     } finally {
       this.isLoading = false;
     }
+  }
+
+  async toggleFavorite(id: number) {
+    await this.pokemonService.toggleFavorite(id);
   }
 
   goToDetail(id: number) {
     this.router.navigate(['/pokemon/detail', id], {
       state: {
         from: '/pokemon/favorites',
-        fromUrl: this.router.url, // Preserva a URL exata
+        fromUrl: this.router.url,
       },
     });
   }
